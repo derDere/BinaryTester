@@ -19,6 +19,12 @@
         Return {A.Key}
     End Function
 
+    Public Overrides ReadOnly Property Symbol As Byte
+        Get
+            Return CByte(Asc("|"))
+        End Get
+    End Property
+
     Public Overrides Sub Update()
         A.State = State
     End Sub

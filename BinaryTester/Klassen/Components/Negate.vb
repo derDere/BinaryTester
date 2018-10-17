@@ -18,6 +18,12 @@
         Return {B.Key}
     End Function
 
+    Public Overrides ReadOnly Property Symbol As Byte
+        Get
+            Return CByte(Asc("!"))
+        End Get
+    End Property
+
     Public Overrides Sub Update()
         B.State = Not A.State
     End Sub

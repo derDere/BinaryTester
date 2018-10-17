@@ -21,6 +21,8 @@
 
     Protected MustOverride Function GetOutputs() As Guid()
 
+    Public MustOverride ReadOnly Property Symbol As Byte
+
     Public MustOverride Sub Update()
 
     <Browsable(False)> _

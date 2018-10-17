@@ -101,6 +101,7 @@
       <DependentUpon>frmMain.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Klassen\Compiler.vb" />
     <Compile Include="Klassen\ComponentBase.vb" />
     <Compile Include="Klassen\Components\TickCounter.vb" />
     <Compile Include="Klassen\Components\Portal.vb" />

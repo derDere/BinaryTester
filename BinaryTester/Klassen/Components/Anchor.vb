@@ -34,6 +34,12 @@
         }
     End Function
 
+    Public Overrides ReadOnly Property Symbol As Byte
+        Get
+            Return CByte(Asc("#"))
+        End Get
+    End Property
+
     Public Overrides Sub Update()
         Dim P As Boolean = False
         For Each I As Guid In GetInputs()

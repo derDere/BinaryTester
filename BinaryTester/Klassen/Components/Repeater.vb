@@ -37,6 +37,12 @@
         Return {B.Key}
     End Function
 
+    Public Overrides ReadOnly Property Symbol As Byte
+        Get
+            Return CByte(Asc(">"))
+        End Get
+    End Property
+
     Public Overrides Sub Update()
         If A.State <> LastA Then
             WorkList.Add(New WorkItem With {.State = A.State, .Ticks = Delay})

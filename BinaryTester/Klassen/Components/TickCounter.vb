@@ -26,6 +26,12 @@
         Return {}
     End Function
 
+    Public Overrides ReadOnly Property Symbol As Byte
+        Get
+            Return CByte(Asc("C"))
+        End Get
+    End Property
+
     Public Overrides Sub Update()
         Dim Pos As Boolean = False
         Dim Neg As Boolean = False

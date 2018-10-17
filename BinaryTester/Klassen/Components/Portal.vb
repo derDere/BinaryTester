@@ -72,6 +72,12 @@
         Return {O.Key}
     End Function
 
+    Public Overrides ReadOnly Property Symbol As Byte
+        Get
+            Return CByte(Asc("P"))
+        End Get
+    End Property
+
     Public Overrides Sub Update()
         Dim P As Boolean = False
         Dim Group As PortalGroup = Nothing

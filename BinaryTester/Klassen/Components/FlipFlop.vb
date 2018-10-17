@@ -23,6 +23,12 @@
         Return {C.Key, D.Key}
     End Function
 
+    Public Overrides ReadOnly Property Symbol As Byte
+        Get
+            Return CByte(Asc("F"))
+        End Get
+    End Property
+
     Public Property Output As Boolean = False
 
     Public Overrides Sub Update()

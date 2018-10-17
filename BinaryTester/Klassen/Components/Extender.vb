@@ -51,6 +51,12 @@
         Return {B.Key}
     End Function
 
+    Public Overrides ReadOnly Property Symbol As Byte
+        Get
+            Return CByte(Asc("-"))
+        End Get
+    End Property
+
     Private WentTrou As Boolean = True
     Public Overrides Sub Update()
         Dim Pos As Boolean = False

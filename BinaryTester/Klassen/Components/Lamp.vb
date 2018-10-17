@@ -23,6 +23,12 @@
         Return {}
     End Function
 
+    Public Overrides ReadOnly Property Symbol As Byte
+        Get
+            Return CByte(Asc("L"))
+        End Get
+    End Property
+
     Public Overrides Sub Update()
     End Sub
 
