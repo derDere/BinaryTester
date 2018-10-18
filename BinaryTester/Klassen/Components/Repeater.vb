@@ -29,11 +29,11 @@
         End Set
     End Property
 
-    Protected Overrides Function GetInputs() As Guid()
+    Friend Overrides Function GetInputs() As Guid()
         Return {A.Key}
     End Function
 
-    Protected Overrides Function GetOutputs() As Guid()
+    Friend Overrides Function GetOutputs() As Guid()
         Return {B.Key}
     End Function
 

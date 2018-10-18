@@ -17,9 +17,9 @@
     Public Sub New()
     End Sub
 
-    Protected MustOverride Function GetInputs() As Guid()
+    Friend MustOverride Function GetInputs() As Guid()
 
-    Protected MustOverride Function GetOutputs() As Guid()
+    Friend MustOverride Function GetOutputs() As Guid()
 
     Public MustOverride ReadOnly Property Symbol As Byte
 

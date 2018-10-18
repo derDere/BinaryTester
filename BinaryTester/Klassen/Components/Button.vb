@@ -26,17 +26,17 @@
 
     Public A As New DataPoint((COMP_WIDTH / 2), 0, Me, True)
 
-    Protected Overrides Function GetInputs() As Guid()
+    Friend Overrides Function GetInputs() As Guid()
         Return {}
     End Function
 
-    Protected Overrides Function GetOutputs() As Guid()
+    Friend Overrides Function GetOutputs() As Guid()
         Return {A.Key}
     End Function
 
     Public Overrides ReadOnly Property Symbol As Byte
         Get
-            Return CByte(Asc("."))
+            Return CByte(Asc("B"))
         End Get
     End Property
 

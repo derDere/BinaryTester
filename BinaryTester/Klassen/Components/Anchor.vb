@@ -16,7 +16,7 @@
     Public O_R As New DataPoint((COMP_WIDTH / 2), 10, Me, True)
     Public O_B As New DataPoint(-10, (COMP_HEIGHT / 2), Me, True)
 
-    Protected Overrides Function GetInputs() As Guid()
+    Friend Overrides Function GetInputs() As Guid()
         Return {
             I_T.Key,
             I_L.Key,
@@ -25,7 +25,7 @@
         }
     End Function
 
-    Protected Overrides Function GetOutputs() As Guid()
+    Friend Overrides Function GetOutputs() As Guid()
         Return {
             O_T.Key,
             O_L.Key,

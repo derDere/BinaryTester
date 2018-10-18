@@ -40,6 +40,8 @@ Partial Class frmMain
         Me.SpeichernToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SpeichernunterToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.toolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+        Me.CompileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.BeendenToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.HilfeToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
@@ -167,7 +169,7 @@ Partial Class frmMain
         '
         'DateiToolStripMenuItem
         '
-        Me.DateiToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NeuToolStripMenuItem, Me.ÖffnenToolStripMenuItem, Me.toolStripSeparator, Me.SpeichernToolStripMenuItem, Me.SpeichernunterToolStripMenuItem, Me.toolStripSeparator1, Me.BeendenToolStripMenuItem})
+        Me.DateiToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.NeuToolStripMenuItem, Me.ÖffnenToolStripMenuItem, Me.toolStripSeparator, Me.SpeichernToolStripMenuItem, Me.SpeichernunterToolStripMenuItem, Me.toolStripSeparator1, Me.CompileToolStripMenuItem, Me.ToolStripSeparator2, Me.BeendenToolStripMenuItem})
         Me.DateiToolStripMenuItem.Name = "DateiToolStripMenuItem"
         Me.DateiToolStripMenuItem.Size = New System.Drawing.Size(46, 20)
         Me.DateiToolStripMenuItem.Text = "&Datei"
@@ -215,6 +217,17 @@ Partial Class frmMain
         Me.toolStripSeparator1.Name = "toolStripSeparator1"
         Me.toolStripSeparator1.Size = New System.Drawing.Size(165, 6)
         '
+        'CompileToolStripMenuItem
+        '
+        Me.CompileToolStripMenuItem.Name = "CompileToolStripMenuItem"
+        Me.CompileToolStripMenuItem.Size = New System.Drawing.Size(168, 22)
+        Me.CompileToolStripMenuItem.Text = "Compile"
+        '
+        'ToolStripSeparator2
+        '
+        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(165, 6)
+        '
         'BeendenToolStripMenuItem
         '
         Me.BeendenToolStripMenuItem.Name = "BeendenToolStripMenuItem"
@@ -249,15 +262,15 @@ Partial Class frmMain
         'SavedFileLab
         '
         Me.SavedFileLab.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.SavedFileLab.AutoSize = True
         Me.SavedFileLab.BackColor = System.Drawing.Color.Teal
         Me.SavedFileLab.ForeColor = System.Drawing.Color.White
-        Me.SavedFileLab.Location = New System.Drawing.Point(983, 10)
+        Me.SavedFileLab.Location = New System.Drawing.Point(917, 10)
         Me.SavedFileLab.Name = "SavedFileLab"
         Me.SavedFileLab.Padding = New System.Windows.Forms.Padding(10)
-        Me.SavedFileLab.Size = New System.Drawing.Size(77, 33)
+        Me.SavedFileLab.Size = New System.Drawing.Size(143, 33)
         Me.SavedFileLab.TabIndex = 2
         Me.SavedFileLab.Text = "File Saved"
+        Me.SavedFileLab.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
         Me.SavedFileLab.Visible = False
         '
         'SavedMsgTimer
@@ -317,5 +330,7 @@ Partial Class frmMain
     Friend WithEvents OpenFileDialog1 As System.Windows.Forms.OpenFileDialog
     Friend WithEvents SavedFileLab As System.Windows.Forms.Label
     Friend WithEvents SavedMsgTimer As System.Windows.Forms.Timer
+    Friend WithEvents CompileToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
 
 End Class

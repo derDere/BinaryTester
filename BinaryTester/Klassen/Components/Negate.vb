@@ -10,11 +10,11 @@
     Public A As New DataPoint(-(COMP_WIDTH / 2), 0, Me)
     Public B As New DataPoint((COMP_WIDTH / 2), 0, Me, True)
 
-    Protected Overrides Function GetInputs() As Guid()
+    Friend Overrides Function GetInputs() As Guid()
         Return {A.Key}
     End Function
 
-    Protected Overrides Function GetOutputs() As Guid()
+    Friend Overrides Function GetOutputs() As Guid()
         Return {B.Key}
     End Function
 

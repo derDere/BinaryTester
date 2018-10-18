@@ -64,11 +64,11 @@
         Me.PortalColor = Drawing.Color.DeepSkyBlue
     End Sub
 
-    Protected Overrides Function GetInputs() As Guid()
+    Friend Overrides Function GetInputs() As Guid()
         Return {I.Key}
     End Function
 
-    Protected Overrides Function GetOutputs() As Guid()
+    Friend Overrides Function GetOutputs() As Guid()
         Return {O.Key}
     End Function
 

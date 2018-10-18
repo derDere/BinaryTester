@@ -32,6 +32,8 @@
         ' Dieser Aufruf ist für den Designer erforderlich.
         InitializeComponent()
 
+        'Dim S As String = ""
+
         For Each T As Type In ComponentTypes
             Dim B As New PictureBox
             ToolTip1.SetToolTip(B, T.Name.Replace("Comp", ""))
@@ -45,6 +47,13 @@
             AddHandler B.MouseDown, AddressOf ButtonMouseDown
             FlowLayoutPanel1.Controls.Add(B)
             ToolButtons.Add(T, B)
+
+            'Compiler Savety
+            Dim TMP = Activator.CreateInstance(T)
+            Compiler.Type2ByteDict.Add(T, TMP.Symbol)
+            Compiler.Byte2TypeDict.Add(TMP.Symbol, T)
+
+            'S &= vbNewLine & "const char " & T.Name & " = " & TMP.Symbol & "; // " & Chr(TMP.Symbol)
         Next
 
         AddHandler Selectable.SelectionChanged, AddressOf Selectable_SelectionChanged
@@ -362,6 +371,7 @@
             IO.File.WriteAllText(CurrentFI.FullName, JJ)
 
             SavedFileLab.Visible = True
+            SavedFileLab.Text = "File Saved"
             SavedMsgTimer.Start()
         Catch ex As Exception
             If Debugger.IsAttached() Then Stop
@@ -369,13 +379,18 @@
         End Try
     End Sub
 
-    Private Function SaveToJJ() As String
+    Private Function CreateSaveFileObj() As SaveFile
         Dim Save As New SaveFile
         Save.AllComponents.AddRange(AllComponents)
         For Each Key As Guid In Connection.AllConnections.Keys
             Save.AllConnections.AddRange(Connection.AllConnections(Key))
         Next
         Save.ScrollOffset = ScrollOffset.Clone
+        Return Save
+    End Function
+
+    Private Function SaveToJJ() As String
+        Dim Save As SaveFile = CreateSaveFileObj()
 
         Dim JJsettings As New Newtonsoft.Json.JsonSerializerSettings
         JJsettings.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All
@@ -444,6 +459,32 @@
     Private Sub SavedMsgTimer_Tick(sender As Object, e As EventArgs) Handles SavedMsgTimer.Tick
         SavedMsgTimer.Stop()
         SavedFileLab.Visible = False
+    End Sub
+
+    Private Sub CompileToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CompileToolStripMenuItem.Click
+        Dim FileName As String
+
+        If CurrentFI Is Nothing Then
+            SpeichernunterToolStripMenuItem_Click(sender, e)
+        End If
+
+        FileName = CurrentFI.FullName
+        FileName = FileName.Substring(0, FileName.LastIndexOf("."c))
+        FileName &= ".bil"
+
+        Dim Compiler As New Compiler(CreateSaveFileObj)
+
+        If IO.File.Exists(FileName) Then IO.File.Delete(FileName)
+
+        Using FS As IO.FileStream = IO.File.OpenWrite(FileName)
+            Compiler.compile(FS)
+            FS.Flush()
+            FS.Close()
+        End Using
+
+        SavedFileLab.Visible = True
+        SavedFileLab.Text = "Project Compiled"
+        SavedMsgTimer.Start()
     End Sub
 
 End Class
