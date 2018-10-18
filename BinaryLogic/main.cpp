@@ -40,7 +40,7 @@ bool* dataPoints;
 
 int main(int argc, char** argv) {
 
-	char* path = "C:\\Users\\deremer\\Documents\\TempWorking\\bt\\UnnamedTest.bil";
+	char* path = "F:\\Users\\Phillip\\Documents\\BinaryTests\\AndExampleTest.bil";
 
 	readFile(path);
 
