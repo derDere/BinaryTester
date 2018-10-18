@@ -3,62 +3,64 @@
 
 using namespace std;
 
-void cComponent::update() {
-	cout << "..." << endl;
-}
+void cComponent::init() { }
+void cComponent::update() { }
 
 void LeaverComp::update() {
-	cout << "LeaverComp" << endl;
-};
+	**this->output = this->state;
+}
 
+void NegateComp::init() {
+	**this->output = true;
+}
 void NegateComp::update() {
-	cout << "NegateComp" << endl;
-};
+	**this->output = !(**this->input);
+}
 
 void AndComp::update() {
-	cout << "AndComp" << endl;
-};
+	**this->output = (**this->input) && (**(this->input + 1));
+}
 
 void LampComp::update() {
-	cout << "LampComp" << endl;
-};
+	this->state = **this->input;
+}
 
 void XorComp::update() {
-	cout << "XorComp" << endl;
-};
+	**this->output = (**this->input) ^ (**(this->input + 1));
+}
 
 void RepeaterComp::update() {
-	cout << "RepeaterComp" << endl;
-};
+	//////////////////////////////////////
+}
 
 void TickerComp::update() {
-	cout << "TickerComp" << endl;
-};
+	//////////////////////////////////////
+}
 
 void FlipFlopComp::update() {
-	cout << "FlipFlopComp" << endl;
-};
+	//////////////////////////////////////
+}
 
 void TFlipFlopComp::update() {
-	cout << "TFlipFlopComp" << endl;
-};
+	//////////////////////////////////////
+}
 
 void ButtonComp::update() {
-	cout << "ButtonComp" << endl;
-};
+	//////////////////////////////////////
+}
 
 void AnchorComp::update() {
-	cout << "AnchorComp" << endl;
-};
+	//////////////////////////////////////
+}
 
 void PortalComp::update() {
-	cout << "PortalComp" << endl;
-};
+	//////////////////////////////////////
+}
 
 void ExtenderComp::update() {
-	cout << "ExtenderComp" << endl;
-};
+	//////////////////////////////////////
+}
 
 void CounterComp::update() {
-	cout << "CounterComp" << endl;
-};
+	//////////////////////////////////////
+}

@@ -1,32 +1,10 @@
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>
+#include <thread>
 #include "components.h"
 
 using namespace std;
-
-const char NEXT_COMMAND = 29; // GS
-const char NEXT_PART = 30;    // RS
-const char NEXT_PARAM = 31;   // US
-const char APP_END = 28;      // FS
-
-const char CONNECTION = 92;   // \ 
-const char DATA_POINT = 46;   // .
-
-const char LEAVER = 124; // |
-const char NEGATE = 33; // !
-const char AND = 38; // &
-const char LAMP = 76; // L
-const char XOR = 88; // X
-const char REPEATER = 62; // >
-const char TICKER = 58; // :
-const char FLIP_FLOP = 70; // F
-const char T_FLIP_FLOP = 84; // T
-const char BUTTON = 66; // B
-const char ANCHOR = 35; // #
-const char PORTAL = 80; // P
-const char EXTENDER = 45; // -
-const char COUNTER = 67; // C
 
 void readFile(char* path);
 
@@ -37,6 +15,7 @@ cComponent* compStart;
 cComponent* compEnd;
 
 bool* dataPoints;
+unsigned short dataPointCount;
 
 int main(int argc, char** argv) {
 
@@ -49,7 +28,7 @@ int main(int argc, char** argv) {
 	sConnection* con = conStart;
 	while (con != NULL) {
 		cout << con->from << "->" << con->to << endl;
-		cout << (bool)*con->from << "->" << (bool)*con->to << endl;
+		cout << (bool)*(dataPoints + con->from) << "->" << (bool)*(dataPoints + con->to) << endl;
 		con = con->next;
 	}
 
@@ -57,7 +36,6 @@ int main(int argc, char** argv) {
 
 	cComponent* com = compStart;
 	while (com != NULL) {
-		com->update();
 		for (int i = 0; i < com->inputCount; i++) {
 			cout << " i:" << *(com->input + i) << " aka " << (bool)**(com->input + i) << endl;
 		}
@@ -65,6 +43,37 @@ int main(int argc, char** argv) {
 			cout << " o:" << *(com->output + i) << " aka " << (bool)**(com->output + i) << endl;
 		}
 		com = com->next;
+	}
+
+	cin.ignore();
+
+	bool* newStates = (bool*)calloc(dataPointCount, sizeof(bool));
+	while (true) {
+		memset (newStates, false, dataPointCount);
+		for (sConnection* con = conStart; con != NULL; con = con->next) {
+			if (*(dataPoints + con->from))
+				*(newStates + con->to) = true;
+		}
+		for (unsigned short i = 0; i < dataPointCount; i++) {
+			*(dataPoints + i) = *(newStates + i);
+		}
+
+		for (cComponent* com = compStart; com != NULL; com = com->next) {
+			com->update();
+		}
+
+		//cout << endl << endl << endl << endl << endl << endl << endl << endl;
+
+		for (cComponent* com = compStart; com != NULL; com = com->next) {
+			if (((LeaverComp*)com)->type == LEAVER) {
+				//cout << "Leaver: " << ((LeaverComp*)com)->state << endl;
+			}
+			if (((LampComp*)com)->type == LAMP) {
+				//cout << "Lamp: " << ((LampComp*)com)->state << endl;
+			}
+		}
+
+		//this_thread::sleep_for(100ms);
 	}
 
 	cin.ignore();
@@ -103,6 +112,8 @@ void readComp(ifstream* fs, cComponent* comp) {
 
 		*(comp->output + (comp->outputCount - 1)) = dataPoints + s;
 	}
+
+	comp->init();
 };
 
 void setNextCon(sConnection* next) {
@@ -144,6 +155,7 @@ void readFile(char* path) {
 				fs.read(&c2, 1);
 				s = (c2 << 8) | c1;
 				cout << "DPs:" << s << endl;
+				dataPointCount = s;
 				dataPoints = (bool*)calloc(s, sizeof(bool));
 				break;
 
@@ -157,9 +169,8 @@ void readFile(char* path) {
 				to = (c2 << 8) | c1;
 				cout << "Con:" << from << "->" << to << endl;
 				newCon = new sConnection();
-				newCon->from = dataPoints + from;
-				newCon->to = dataPoints + to;
-				*newCon->to = true;
+				newCon->from = from;
+				newCon->to = to;
 				setNextCon(newCon);
 				break;
 
