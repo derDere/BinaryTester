@@ -19,7 +19,7 @@ unsigned short dataPointCount;
 
 int main(int argc, char** argv) {
 
-	char* path = "F:\\Users\\Phillip\\Documents\\BinaryTests\\AndExampleTest.bil";
+	char* path = "C:\\Users\\deremer\\Documents\\TempWorking\\bt\\UnnamedTest.bil";
 
 	readFile(path);
 
