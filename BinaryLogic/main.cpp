@@ -4,9 +4,12 @@
 #include <thread>
 #include "components.h"
 
+
 using namespace std;
 
+
 void readFile(char* path);
+
 
 sConnection* conStart;
 sConnection* conEnd;
@@ -17,9 +20,11 @@ cComponent* compEnd;
 bool* dataPoints;
 unsigned short dataPointCount;
 
+
 int main(int argc, char** argv) {
 
-	char* path = "C:\\Users\\deremer\\Documents\\TempWorking\\bt\\UnnamedTest.bil";
+	//char* path = "C:\\Users\\deremer\\Documents\\TempWorking\\bt\\UnnamedTest.bil";
+	char* path = "F:\\Users\\Phillip\\Documents\\BinaryTests\\AndExampleTest.bil";
 
 	readFile(path);
 
@@ -51,10 +56,13 @@ int main(int argc, char** argv) {
 	while (true) {
 		memset (newStates, false, dataPointCount);
 		for (sConnection* con = conStart; con != NULL; con = con->next) {
+			bool* from = dataPoints + con->from;
+			bool* to = dataPoints + con->to;
 			if (*(dataPoints + con->from))
 				*(newStates + con->to) = true;
 		}
 		for (unsigned short i = 0; i < dataPointCount; i++) {
+			bool newState = *(newStates + i);
 			*(dataPoints + i) = *(newStates + i);
 		}
 
@@ -62,18 +70,18 @@ int main(int argc, char** argv) {
 			com->update();
 		}
 
-		//cout << endl << endl << endl << endl << endl << endl << endl << endl;
+		cout << endl << endl << endl << endl << endl << endl << endl << endl;
 
 		for (cComponent* com = compStart; com != NULL; com = com->next) {
 			if (((LeaverComp*)com)->type == LEAVER) {
-				//cout << "Leaver: " << ((LeaverComp*)com)->state << endl;
+				cout << "Leaver: " << ((LeaverComp*)com)->state << endl;
 			}
 			if (((LampComp*)com)->type == LAMP) {
-				//cout << "Lamp: " << ((LampComp*)com)->state << endl;
+				cout << "Lamp: " << ((LampComp*)com)->state << endl;
 			}
 		}
 
-		//this_thread::sleep_for(100ms);
+		this_thread::sleep_for(1000ms);
 	}
 
 	cin.ignore();
@@ -81,40 +89,6 @@ int main(int argc, char** argv) {
 	return 0;
 }
 
-void readComp(ifstream* fs, cComponent* comp) {
-	char c, c1, c2;
-	unsigned short s;
-
-	while (fs->read(&c, 1) && c == NEXT_PARAM) {
-		fs->read(&c1, 1);
-		fs->read(&c2, 1);
-		s = (c2 << 8) | c1;
-
-		cout << "   i:" << s << endl;
-
-		comp->inputCount += 1;
-
-		comp->input = (bool**)realloc(comp->input, comp->inputCount * sizeof(bool*));
-
-		*(comp->input + (comp->inputCount - 1)) = dataPoints + s;
-	}
-
-	while (fs->read(&c, 1) && c == NEXT_PARAM) {
-		fs->read(&c1, 1);
-		fs->read(&c2, 1);
-		s = (c2 << 8) | c1;
-
-		cout << "   o:" << s << endl;
-
-		comp->outputCount += 1;
-
-		comp->output = (bool**)realloc(comp->output, comp->outputCount * sizeof(bool*));
-
-		*(comp->output + (comp->outputCount - 1)) = dataPoints + s;
-	}
-
-	comp->init();
-};
 
 void setNextCon(sConnection* next) {
 	if (conEnd == NULL) {
@@ -127,6 +101,7 @@ void setNextCon(sConnection* next) {
 	}
 }
 
+
 void setNextComp(cComponent* next) {
 	if (compEnd == NULL) {
 		compStart = next;
@@ -137,6 +112,7 @@ void setNextComp(cComponent* next) {
 		compEnd = next;
 	}
 }
+
 
 void readFile(char* path) {
 	ifstream fs(path, ios::binary | ios::in);
@@ -175,100 +151,86 @@ void readFile(char* path) {
 				break;
 
 			case LEAVER:
-				newComp = new LeaverComp();
 				cout << "LEAVER" << endl;
-				readComp(&fs, newComp);
+				newComp = new LeaverComp(&fs, dataPoints);
 				setNextComp(newComp);
 				break;
 
 			case NEGATE:
-				newComp = new NegateComp();
 				cout << "NEGATE" << endl;
-				readComp(&fs, newComp);
+				newComp = new NegateComp(&fs, dataPoints);
 				setNextComp(newComp);
 				break;
 
 			case AND:
-				newComp = new AndComp();
 				cout << "AND" << endl;
-				readComp(&fs, newComp);
+				newComp = new AndComp(&fs, dataPoints);
 				setNextComp(newComp);
 				break;
 
 			case LAMP:
-				newComp = new LampComp();
 				cout << "LAMP" << endl;
-				readComp(&fs, newComp);
+				newComp = new LampComp(&fs, dataPoints);
 				setNextComp(newComp);
 				break;
 
 			case XOR:
-				newComp = new XorComp();
 				cout << "XOR" << endl;
-				readComp(&fs, newComp);
+				newComp = new XorComp(&fs, dataPoints);
 				setNextComp(newComp);
 				break;
 
 			case REPEATER:
-				newComp = new RepeaterComp();
 				cout << "REPEATER" << endl;
-				readComp(&fs, newComp);
+				newComp = new RepeaterComp(&fs, dataPoints);
 				setNextComp(newComp);
 				break;
 
 			case TICKER:
-				newComp = new TickerComp();
 				cout << "TICKER" << endl;
-				readComp(&fs, newComp);
+				newComp = new TickerComp(&fs, dataPoints);
 				setNextComp(newComp);
 				break;
 
 			case FLIP_FLOP:
-				newComp = new FlipFlopComp();
 				cout << "FLIP_FLOP" << endl;
-				readComp(&fs, newComp);
+				newComp = new FlipFlopComp(&fs, dataPoints);
 				setNextComp(newComp);
 				break;
 
 			case T_FLIP_FLOP:
-				newComp = new TFlipFlopComp();
 				cout << "T_FLIP_FLOP" << endl;
-				readComp(&fs, newComp);
+				newComp = new TFlipFlopComp(&fs, dataPoints);
 				setNextComp(newComp);
 				break;
 
 			case BUTTON:
-				newComp = new ButtonComp();
 				cout << "BUTTON" << endl;
-				readComp(&fs, newComp);
+				newComp = new ButtonComp(&fs, dataPoints);
 				setNextComp(newComp);
 				break;
 
 			case ANCHOR:
-				newComp = new AnchorComp();
 				cout << "ANCHOR" << endl;
-				readComp(&fs, newComp);
+				newComp = new AnchorComp(&fs, dataPoints);
 				setNextComp(newComp);
 				break;
 
 			case PORTAL:
-				newComp = new PortalComp();
 				cout << "PORTAL" << endl;
-				readComp(&fs, newComp);
+				newComp = new PortalComp(&fs, dataPoints);
 				setNextComp(newComp);
 				break;
 
 			case EXTENDER:
-				newComp = new ExtenderComp();
 				cout << "EXTENDER" << endl;
-				readComp(&fs, newComp);
+				newComp = new ExtenderComp(&fs, dataPoints);
 				setNextComp(newComp);
 				break;
 
 			case COUNTER:
-				newComp = new CounterComp();
 				cout << "COUNTER" << endl;
-				readComp(&fs, newComp);
+				newComp = new CounterComp(&fs, dataPoints);
 				setNextComp(newComp);
 				break;
 
