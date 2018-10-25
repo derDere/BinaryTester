@@ -45,6 +45,23 @@
         Return L
     End Function
 
+    Public Sub Compile(Stream As IO.Stream, DataPoints As Dictionary(Of Guid, UInt16))
+        Stream.Write({Me.Symbol}, 0, 1)
+        For Each DP As Guid In Me.GetInputs
+            Stream.Write({Compiler.NEXT_PARAM}, 0, 1)
+            Stream.Write(BitConverter.GetBytes(DataPoints(DP)), 0, 2)
+        Next
+        Stream.Write({Compiler.NEXT_PART}, 0, 1)
+        For Each DP As Guid In Me.GetOutputs
+            Stream.Write({Compiler.NEXT_PARAM}, 0, 1)
+            Stream.Write(BitConverter.GetBytes(DataPoints(DP)), 0, 2)
+        Next
+        OnCompile(Stream, DataPoints)
+        Stream.Write({Compiler.NEXT_COMMAND}, 0, 1)
+    End Sub
+
+    Protected MustOverride Sub OnCompile(Stream As IO.Stream, DataPoints As Dictionary(Of Guid, UInt16))
+
     Public Sub Draw(G As Graphics)
         Dim Bounds As Rectangle = GetBounds()
         If Me.IsSelected Then

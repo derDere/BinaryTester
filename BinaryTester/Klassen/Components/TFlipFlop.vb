@@ -29,6 +29,9 @@
 
     Public Property Output As Boolean = False
 
+    Protected Overrides Sub OnCompile(Stream As IO.Stream, DataPoints As Dictionary(Of Guid, UShort))
+    End Sub
+
     Public Overrides Sub Update()
         Dim PosA As Boolean = False
 

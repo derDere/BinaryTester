@@ -19,6 +19,7 @@
     Public Sub compile(Stream As IO.Stream)
         Dim DataPoints As New Dictionary(Of Guid, UInt16)
 
+        'Writing Datapoint Informations
         Dim Id As UInt16 = 0
         For Each Comp As ComponentBase In Project.AllComponents
             For Each DP As Guid In Comp.GetAllDataPoints()
@@ -32,18 +33,10 @@
         Stream.Write(BitConverter.GetBytes(Id), 0, 2)
         Stream.Write({NEXT_COMMAND}, 0, 1)
 
+        Portal.PortalIds.Clear()
+
         For Each Comp As ComponentBase In Project.AllComponents
-            Stream.Write({Comp.Symbol}, 0, 1)
-            For Each DP As Guid In Comp.GetInputs
-                Stream.Write({NEXT_PARAM}, 0, 1)
-                Stream.Write(BitConverter.GetBytes(DataPoints(DP)), 0, 2)
-            Next
-            Stream.Write({NEXT_PART}, 0, 1)
-            For Each DP As Guid In Comp.GetOutputs
-                Stream.Write({NEXT_PARAM}, 0, 1)
-                Stream.Write(BitConverter.GetBytes(DataPoints(DP)), 0, 2)
-            Next
-            Stream.Write({NEXT_COMMAND}, 0, 1)
+            Comp.Compile(Stream, DataPoints)
         Next
 
         For Each Con As Connection In Project.AllConnections

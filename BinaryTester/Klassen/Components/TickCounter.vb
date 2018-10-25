@@ -32,6 +32,9 @@
         End Get
     End Property
 
+    Protected Overrides Sub OnCompile(Stream As IO.Stream, DataPoints As Dictionary(Of Guid, UShort))
+    End Sub
+
     Public Overrides Sub Update()
         Dim Pos As Boolean = False
         Dim Neg As Boolean = False

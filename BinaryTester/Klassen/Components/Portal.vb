@@ -10,6 +10,7 @@
     Public I As New DataPoint(-(COMP_WIDTH / 2), 0, Me)
     Public O As New DataPoint((COMP_WIDTH / 2), 0, Me, True)
 
+    Friend Shared PortalIds As New Dictionary(Of Color, UInt32)
     Private Class PortalGroup
         Public Shared Index As Integer = 1
         Public Name As String
@@ -77,6 +78,20 @@
             Return CByte(Asc("P"))
         End Get
     End Property
+
+    Protected Overrides Sub OnCompile(Stream As IO.Stream, DataPoints As Dictionary(Of Guid, UShort))
+        If PortalIds.Count <= 0 Then
+            Dim ColorID As Integer = 0
+            For Each c As Color In AllPortals.Keys
+                If Not PortalIds.ContainsKey(c) Then
+                    PortalIds.Add(c, ColorID)
+                    ColorID += 1
+                End If
+            Next
+        End If
+        Stream.Write({Compiler.NEXT_PART}, 0, 1)
+        Stream.Write(BitConverter.GetBytes(PortalIds(PortalColor)), 0, 4)
+    End Sub
 
     Public Overrides Sub Update()
         Dim P As Boolean = False

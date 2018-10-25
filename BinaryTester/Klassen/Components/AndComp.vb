@@ -25,6 +25,9 @@
         End Get
     End Property
 
+    Protected Overrides Sub OnCompile(Stream As IO.Stream, DataPoints As Dictionary(Of Guid, UShort))
+    End Sub
+
     Public Overrides Sub Update()
         C.State = A.State And B.State
     End Sub

@@ -24,7 +24,8 @@ unsigned short dataPointCount;
 int main(int argc, char** argv) {
 
 	//char* path = "C:\\Users\\deremer\\Documents\\TempWorking\\bt\\UnnamedTest.bil";
-	char* path = "F:\\Users\\Phillip\\Documents\\BinaryTests\\AndExampleTest.bil";
+	//char* path = "F:\\Users\\Phillip\\Documents\\BinaryTests\\AndExampleTest.bil";
+	char* path = "F:\\Users\\Phillip\\Documents\\BinaryTests\\JennyBeispiel.bil";
 
 	readFile(path);
 
@@ -81,7 +82,7 @@ int main(int argc, char** argv) {
 			}
 		}
 
-		this_thread::sleep_for(1000ms);
+		//this_thread::sleep_for(1000ms);
 	}
 
 	cin.ignore();

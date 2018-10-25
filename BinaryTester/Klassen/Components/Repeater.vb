@@ -43,6 +43,9 @@
         End Get
     End Property
 
+    Protected Overrides Sub OnCompile(Stream As IO.Stream, DataPoints As Dictionary(Of Guid, UShort))
+    End Sub
+
     Public Overrides Sub Update()
         If A.State <> LastA Then
             WorkList.Add(New WorkItem With {.State = A.State, .Ticks = Delay})
